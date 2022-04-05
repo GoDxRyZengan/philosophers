@@ -1,6 +1,7 @@
 SRCS =	./srcs/main.c \
 		./srcs/parsing.c \
 		./srcs/utils.c \
+		./srcs/routine.c \
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -9,8 +10,8 @@ NAME	= philo
 INC		= ./include/
 
 #CC		= gcc -Wall -Werror -Wextra -g -pthread
-CC		= gcc -pthread
-
+#CC		= gcc -pthread -fsanitize=address -g
+CC		= gcc -pthread -g
 
 RM		= rm -f
 

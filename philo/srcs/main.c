@@ -1,47 +1,35 @@
 #include "../include/philo.h"
 
-void	*routine(void *arg)
+void	init_philo_utils(t_info *info, int i)
 {
-	static int i = 0;
-//	static pthread_mutex_t  mutex = PTHREAD_MUTEX_INITIALIZER;
-	t_philo	*philo;
-	philo = (t_philo*)arg;
-	printf("On est dans le thread n : %d // test %d\n", philo->num_philo, philo->info->nb_philo);
-	i++;
-//	pthread_exit(NULL);
-	if (i == philo->info->nb_philo)
-	{
-		philo->info->
-	}
-}
-
-int	init_philo_utils(t_info *info, int i)
-{
-	t_philo philo;
-	int res;
-
-	philo.num_philo = i + 1;
-	philo.status = 'c';
-	philo.info = info;
-	res = pthread_create(&info->philo->id, NULL, &routine, &philo);
-	if (res != 0)
-		return (-1);
-	pthread_join(info->philo->id, NULL);
-	info->philo[i] = philo;
-	return (0);
+	info->philo[i].num_philo = i + 1;
+	info->philo[i].fork = 1;
+	info->philo[i].info = info;
 }
 
 
 int	init_philo(t_info *info)
 {
 	int i;
-
+	
 	i = 0;
 	while (i < info->nb_philo)
 	{
-		printf("%d\n", i);
-		if (init_philo_utils(info, i) == -1)
-			return (-1);
+		init_philo_utils(info, i);
+		i++;
+	}
+	i = 0;
+	while (i < info->nb_philo)
+	{
+		printf("le philo %d est creer\n", info->philo[i].num_philo);
+		i++;
+	}
+	i = 0;
+	while (i < info->nb_philo)
+	{
+		write(1, "lancement\n", 10);
+//		printf("le philo n %d est lancer dans routine\n", info->philo[i].num_philo);
+		pthread_create(&info->philo[i].id, NULL, &routine, &info->philo[i]);
 		i++;
 	}
 	return (0);
@@ -62,7 +50,7 @@ void	init_struct(char **tab, int argc, t_info *info)
 int	main(int argc, char **argv)
 {
 	t_info info;
-	t_philo	*philo;
+//	t_philo	*philo;
 
 	if (argc != 5 && argc != 6)
 	{
@@ -75,10 +63,10 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	init_struct(argv, argc, &info);
-	philo = malloc(sizeof(t_philo*) * (info.nb_philo + 1));
-	if (!philo)
+	info.philo = malloc(sizeof(t_philo) * (info.nb_philo + 1));
+	if (!info.philo)
 		return (0);
-	info.philo = philo;
+//	info.philo = philo;
 	if (init_philo(&info) == -1)
 		return (0);
 	return (0);
