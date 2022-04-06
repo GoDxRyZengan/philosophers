@@ -74,6 +74,6 @@ void	*routine(void *arg)
 	t_philo	*philo;
 	philo = (t_philo*)arg;
 
-	printf("le philo n:%d est dans la routine\n", philo->num_philo);
+//	printf("le philo n:%d est dans la routine\n", philo->num_philo);
 	routine_to_eat(philo->info, philo->num_philo);
 }

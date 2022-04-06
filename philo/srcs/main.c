@@ -27,7 +27,7 @@ int	init_philo(t_info *info)
 	i = 0;
 	while (i < info->nb_philo)
 	{
-		write(1, "lancement\n", 10);
+//		write(1, "lancement\n", 10);
 //		printf("le philo n %d est lancer dans routine\n", info->philo[i].num_philo);
 		pthread_create(&info->philo[i].id, NULL, &routine, &info->philo[i]);
 		i++;
