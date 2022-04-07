@@ -21,7 +21,7 @@ int	init_philo(t_info *info)
 	i = 0;
 	while (i < info->nb_philo)
 	{
-		printf("le philo %d est creer\n", info->philo[i].num_philo);
+	//	printf("le philo %d est creer\n", info->philo[i].num_philo);
 		i++;
 	}
 	i = 0;
