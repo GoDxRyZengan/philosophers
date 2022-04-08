@@ -2,6 +2,7 @@ SRCS =	./srcs/main.c \
 		./srcs/parsing.c \
 		./srcs/utils.c \
 		./srcs/routine.c \
+		./srcs/init_struct.c \
 
 OBJS	= ${SRCS:.c=.o}
 

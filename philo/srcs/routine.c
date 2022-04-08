@@ -1,73 +1,55 @@
 #include "../include/philo.h"
 
-void	ft_write(int nb, int act)
+void	ft_write(t_info *info, int nb, int act)
 {
-	pthread_mutex_t write;
+	struct timeval	now;
 
-	pthread_mutex_lock(&write);
+	pthread_mutex_lock(&info->write);
+	gettimeofday(&now, NULL);
 	if (act == 0)
-		printf("%d has taken a fork\n", nb);
+		printf("%.0f %d has taken a fork\n", (10e3 * ((now.tv_sec - info->start.tv_sec) + 10e-6 * (now.tv_usec - info->start.tv_usec))), nb);
 	else if (act == 1)
-		printf("%d is eating\n", nb);
+		printf("%.0f %d is eating\n", ( 10e3 * ((now.tv_sec - info->start.tv_sec) + 10e-6 * (now.tv_usec - info->start.tv_usec))), nb);
 	else if (act == 2)
-		printf("%d is sleeping\n", nb);
+		printf("%.0f %d is sleeping\n", ( 10e3 * ((now.tv_sec - info->start.tv_sec) + 10e-6 * (now.tv_usec - info->start.tv_usec))), nb);
 	else if (act == 3)
-		printf("%d is thinking\n", nb);
+		printf("%.0f %d is thinking\n", ( 10e3 * ((now.tv_sec - info->start.tv_sec) + 10e-6 * (now.tv_usec - info->start.tv_usec))), nb);
 	else if (act == 4)
-		printf("%d is dead\n", nb);
-	pthread_mutex_unlock(&write);
+		printf("%.0f %d died\n", ( 10e3 * ((now.tv_sec - info->start.tv_sec) + 10e-6 * (now.tv_usec - info->start.tv_usec))), nb);
+	pthread_mutex_unlock(&info->write);
 }
 
-void	routine_to_sleep(t_info *info, int nb)
+void	routine_to_sleep_think(t_philo *philo)
 {
-	int i;
-
-	i = 0;
-	write(1, "OK\n", 3);
-//	printf("philo n %d dans routine_to_sleep\n", nb);
-	while (1)
-		i++;
+	ft_write(philo->info, philo->num_philo, 2);
+	ft_usleep((long int)philo->info->t_t_s);
+	//usleep(philo->info->t_t_s * 10^3);
+	ft_write(philo->info, philo->num_philo, 3);
 }
 
-void	routine_to_eat(t_info *info, int nb)
+void	routine_to_eat(t_philo *philo)
 {
-	pthread_mutex_t fork;
-
-	write(1, "vivant\n", 7);
-//	pthread_mutex_init(&fork, NULL);
-//	printf("philo n %d dans routine_to_eat\n", nb);
-//	pthread_mutex_lock(&fork);
-	if (info->philo[nb].fork == 1)
+	struct timeval	eat;
+	pthread_mutex_lock(philo->l_f);
+	pthread_mutex_lock(&philo->r_f);
+	ft_write(philo->info, philo->num_philo, 0);
+	gettimeofday(&eat, NULL);
+	if (((10e3 * ((eat.tv_sec - philo->info->start.tv_sec) + 10e-6 * (eat.tv_usec - philo->info->start.tv_usec))) - philo->l_eat) > philo->info->t_t_d)
 	{
-//		pthread_mutex_lock(&fork);
-		if ((nb == info->nb_philo - 1) && (info->philo[0].fork == 1))
-		{
-			pthread_mutex_lock(&fork);
-			info->philo[nb].fork = 2;
-//			ft_write(nb, 0);
-			info->philo[0].fork = 0;
-//			ft_write(nb, 1);
-			info->philo[nb].fork = 1;
-			info->philo[0].fork = 1;
-			pthread_mutex_unlock(&fork);
-		}
-		else if (info->philo[nb + 1].fork == 1)
-		{
-			pthread_mutex_lock(&fork);
-			info->philo[nb].fork = 2;
-//			ft_write(nb, 0);
-			info->philo[nb + 1].fork = 0;
-//			ft_write(nb, 1);
-			info->philo[nb].fork = 1;
-			info->philo[nb + 1].fork = 1;
-			pthread_mutex_unlock(&fork);
-		}
-//		pthread_mutex_unlock(&fork);
+//		printf("%.0f\n", ((10e3 * ((eat.tv_sec - philo->info->start.tv_sec) + 10e-6 * (eat.tv_usec - philo->info->start.tv_usec))) - philo->l_eat));
+		ft_write(philo->info , philo->num_philo, 4);
+		philo->info->death = 1;
+		exit(1);
 	}
-//	write(1, "LOL\n", 4);
-//	pthread_mutex_destroy(&fork);
-//	pthread_mutex_unlock(&fork);
-	routine_to_sleep(info, nb);
+	ft_write(philo->info, philo->num_philo, 1);
+	philo->eat++;
+	ft_usleep((long int)philo->info->t_t_e);
+//	usleep(philo->info->t_t_e * 10^3);
+	gettimeofday(&eat, NULL);
+	philo->l_eat = ((10e3 * ((eat.tv_sec - philo->info->start.tv_sec) + 10e-6 * (eat.tv_usec - philo->info->start.tv_usec))) - philo->l_eat);
+	pthread_mutex_unlock(&philo->r_f);
+	pthread_mutex_unlock(philo->l_f);
+	routine_to_sleep_think(philo);
 }
 
 void	*routine(void *arg)
@@ -75,7 +57,8 @@ void	*routine(void *arg)
 	t_philo	*philo;
 	philo = (t_philo*)arg;
 
-//	write(1, "vivant\n", 7);
-//	printf("le philo n:%d est dans la routine\n", philo->num_philo);
-	routine_to_eat(philo->info, philo->num_philo);
+	if (philo->num_philo % 2 == 0)
+		usleep(philo->info->nb_t_e / 10);
+	while (philo->info->death == 0 && philo->eat < philo->info->nb_t_e)
+		routine_to_eat(philo);
 }
