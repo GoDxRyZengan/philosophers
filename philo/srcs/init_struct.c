@@ -8,7 +8,7 @@ void	init_philo_utils(t_info *info, int i)
 	else
 		info->philo[i].l_f = &info->philo[i + 1].r_f;
 	info->philo[i].num_philo = i + 1;
-	info->philo[i].eat = 0;
+	info->philo[i].nb_eat = 0;
 	info->philo[i].l_eat = 0;
 	info->philo[i].info = info;
 }
@@ -24,6 +24,7 @@ int	init_philo(t_info *info)
 		i++;
 	}
 	i = 0;
+	gettimeofday(&info->start, NULL);
 	while (i < info->nb_philo)
 	{
 		pthread_create(&info->philo[i].id, NULL, &routine, &info->philo[i]);
@@ -41,7 +42,6 @@ int	init_philo(t_info *info)
 void	init_struct(char **tab, int argc, t_info *info)
 {
 	pthread_mutex_init(&info->write, NULL);
-	gettimeofday(&info->start, NULL);
 	info->death = 0;
 	info->nb_philo = ft_atoi(tab[1]);
 	info->t_t_d = ft_atoi(tab[2]);

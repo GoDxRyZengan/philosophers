@@ -1,5 +1,24 @@
 #include "../include/philo.h"
 
+void	*routine(void *arg)
+{
+	t_philo	*philo;
+	philo = (t_philo*)arg;
+
+	if (philo->num_philo % 2 == 0)
+		usleep(philo->info->nb_t_e / 10);
+	if (philo->info->nb_t_e <= 0)
+	{
+		while (philo->info->death == 0)
+			routine_to_eat(philo);
+	}
+	else if (philo->info->nb_t_e > 0)
+	{
+		while (philo->info->death == 0 && (philo->nb_eat < philo->info->nb_t_e))
+				routine_to_eat(philo);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_info info;

@@ -18,7 +18,7 @@ typedef	struct	s_info	t_info;
 typedef struct	s_philo
 {
 	int				num_philo;
-	int				eat;
+	int				nb_eat;
 	int				l_eat;
 	pthread_t		id;
 	pthread_mutex_t	r_f;
