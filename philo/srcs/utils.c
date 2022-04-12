@@ -1,21 +1,48 @@
 #include "../include/philo.h"
+
 /*
-void	ft_usleep(unsigned int time)
+void	ft_usleep(unsigned int time, t_info *info)
 {
-	struct timeval	start;
 	struct timeval	now;
 
-	gettimeofday(&start, NULL);
 	gettimeofday(&now, NULL);
-	while ((10e3 * ((now.tv_sec - start.tv_sec) + 10e-6 * (now.tv_usec - start.tv_usec))) < time)
+	printf("TRY :%f\n", (10e3 * ((now.tv_sec - info->start.tv_sec) + 10e-6 * (now.tv_usec - info->start.tv_usec))));
+	while ((10e3 * ((now.tv_sec - info->start.tv_sec) + 10e-6 * (now.tv_usec - info->start.tv_usec))) < time)
 	{
 //		printf("%.0f\n", (10e3 * ((now.tv_sec - start.tv_sec) + 10e-6 * (now.tv_usec - start.tv_usec))));
 		usleep(1000);
-		gettimeofday(&now, NULL);
 	}
 //	printf("%.0f\n", (10e3 * ((now.tv_sec - start.tv_sec) + 10e-6 * (now.tv_usec - start.tv_usec))));
-}*/
+}
 
+
+long int	actual_time(void)
+{
+	long int			time;
+	struct timeval		current_time;
+
+	time = 0;
+	gettimeofday(&current_time, NULL);
+	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
+	return (time);
+}
+
+void	ft_usleep(long int time_in_ms, t_info *info)
+{
+	long int	start_time;
+
+	start_time = 0;
+	start_time = actual_time();
+//	printf("%ld\n", start_time);
+	printf("DEBUT:%ld\n", actual_time());
+	while ((actual_time() - start_time) < time_in_ms)
+	{
+//		printf("%ld\n", actual_time() - start_time);
+		usleep(1000);
+//		printf("%ld\n", actual_time() - start_time);
+	}
+	printf("FIN:  %ld\n", actual_time());
+}*/
 
 long int	actual_time(void)
 {
@@ -34,6 +61,7 @@ void	ft_usleep(long int time_in_ms)
 
 	start_time = 0;
 	start_time = actual_time();
+	time_in_ms = time_in_ms * 10e-3;
 	while ((actual_time() - start_time) < time_in_ms)
 		usleep(time_in_ms / 10);
 }
