@@ -19,7 +19,7 @@ typedef struct	s_philo
 {
 	int				num_philo;
 	int				nb_eat;
-	int				l_eat;
+	long int				l_eat;
 	pthread_t		id;
 	pthread_mutex_t	r_f;
 	pthread_mutex_t	*l_f;
@@ -35,7 +35,7 @@ struct s_info
 	int				t_t_s;
 	int				nb_t_e;
 	int				death;
-	struct timeval	start;
+	long int		start;
 	pthread_mutex_t	write;
 	t_philo			*philo;
 };
@@ -48,9 +48,13 @@ int		init_philo(t_info *info);
 void	init_struct(char **tab, int argc, t_info *info);
 void	*routine(void *arg);
 void	routine_to_eat(t_philo *philo);
-//void	ft_usleep(long int time, t_info *info);
-void	ft_usleep(long int time);
+void	ft_usleep(long int time, t_philo *philo);
+//void	ft_usleep(long int time);
 void	init_struct(char **tab, int argc, t_info *info);
+//long	ft_atoi(char *str);
 long int	ft_atoi(const char *str);
+long int	actual_time(void);
+void		check_death(t_philo *philo);
+void	ft_write(t_info *info, int nb, int act);
 
 #endif

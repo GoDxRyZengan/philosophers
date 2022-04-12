@@ -9,7 +9,7 @@ void	init_philo_utils(t_info *info, int i)
 		info->philo[i].l_f = &info->philo[i + 1].r_f;
 	info->philo[i].num_philo = i + 1;
 	info->philo[i].nb_eat = 0;
-	info->philo[i].l_eat = 0;
+	info->philo[i].l_eat = actual_time();
 	info->philo[i].info = info;
 }
 
@@ -24,7 +24,7 @@ int	init_philo(t_info *info)
 		i++;
 	}
 	i = 0;
-	gettimeofday(&info->start, NULL);
+	info->start = actual_time();
 	while (i < info->nb_philo)
 	{
 		pthread_create(&info->philo[i].id, NULL, &routine, &info->philo[i]);

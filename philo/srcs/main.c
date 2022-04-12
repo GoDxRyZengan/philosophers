@@ -5,6 +5,12 @@ void	*routine(void *arg)
 	t_philo	*philo;
 	philo = (t_philo*)arg;
 
+	if (philo->info->nb_philo == 1)
+	{
+		ft_usleep(philo->info->t_t_d, philo);
+		ft_write(philo->info, philo->num_philo, 4);
+		exit(0);
+	}
 	if (philo->num_philo % 2 == 0)
 		usleep(philo->info->nb_t_e / 10);
 	if (philo->info->nb_t_e <= 0)
