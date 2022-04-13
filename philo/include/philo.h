@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hucoulon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/13 18:50:58 by hucoulon          #+#    #+#             */
+/*   Updated: 2022/04/13 18:51:01 by hucoulon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -33,6 +44,7 @@ struct s_info
 	int				death;
 	long int		start;
 	pthread_mutex_t	write;
+	pthread_mutex_t	dead;
 	t_philo			*philo;
 };
 
@@ -40,7 +52,7 @@ int			check_arg(char **argv);
 int			check_int(char	*str);
 int			ft_strlen(char *str);
 void		init_philo_utils(t_info *info, int i);
-int			init_philo(t_info *info);
+void		init_philo(t_info *info);
 void		init_struct(char **tab, int argc, t_info *info);
 void		*routine(void *arg);
 void		routine_to_eat(t_philo *philo);

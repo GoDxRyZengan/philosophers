@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hucoulon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/13 18:51:21 by hucoulon          #+#    #+#             */
+/*   Updated: 2022/04/13 18:51:25 by hucoulon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/philo.h"
 
 void	*routine(void *arg)
@@ -37,8 +48,7 @@ int	main(int argc, char **argv)
 	info.philo = malloc(sizeof(t_philo) * (info.nb_philo + 1));
 	if (!info.philo)
 		return (0);
-	if (init_philo(&info) == -1)
-		return (0);
+	init_philo(&info);
 	free(info.philo);
 	return (0);
 }

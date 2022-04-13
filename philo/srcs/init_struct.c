@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_struct.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hucoulon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/13 18:51:11 by hucoulon          #+#    #+#             */
+/*   Updated: 2022/04/13 18:51:14 by hucoulon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/philo.h"
 
 void	init_philo_utils(t_info *info, int i)
@@ -13,7 +24,7 @@ void	init_philo_utils(t_info *info, int i)
 	info->philo[i].info = info;
 }
 
-int	init_philo(t_info *info)
+void	init_philo(t_info *info)
 {
 	int	i;
 
@@ -36,12 +47,12 @@ int	init_philo(t_info *info)
 		pthread_join(info->philo[i].id, NULL);
 		i++;
 	}
-	return (0);
 }
 
 void	init_struct(char **tab, int argc, t_info *info)
 {
 	pthread_mutex_init(&info->write, NULL);
+	pthread_mutex_init(&info->dead, NULL);
 	info->death = 0;
 	info->nb_philo = ft_atoi(tab[1]);
 	info->t_t_d = ft_atoi(tab[2]);

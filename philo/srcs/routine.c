@@ -1,9 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hucoulon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/13 18:51:46 by hucoulon          #+#    #+#             */
+/*   Updated: 2022/04/13 18:51:50 by hucoulon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/philo.h"
 
 void	ft_write(t_info *info, int nb, int act)
 {
-	struct timeval	now;
-
 	pthread_mutex_lock(&info->write);
 	if (act == 0)
 		printf("%ld %d has taken a fork\n", actual_time() - info->start, nb);
@@ -17,25 +26,24 @@ void	ft_write(t_info *info, int nb, int act)
 		printf("%ld %d died\n", actual_time() - info->start, nb);
 	pthread_mutex_unlock(&info->write);
 }
-
+/*
 void	ft_free(t_philo *philo)
 {
 	pthread_mutex_destroy(&philo->r_f);
 	pthread_mutex_destroy(&philo->info->write);
 //	free(philo->info->philo);
-}
+}*/
 
 void	check_death(t_philo *philo)
 {
-	int	i;
-
-	i = philo->info->nb_philo;
 	if (philo->info->t_t_d < (actual_time() - philo->l_eat))
 	{
-		philo->info->death == 1;
+		pthread_mutex_lock(&philo->info->dead);
+		philo->info->death = 1;
+		pthread_mutex_unlock(&philo->info->dead);
 		ft_write(philo->info, philo->num_philo, 4);
-		ft_free(philo);
-		return ;
+		free(philo);
+		exit(0);
 	}
 }
 
@@ -54,10 +62,11 @@ void	routine_to_eat(t_philo *philo)
 	ft_write(philo->info, philo->num_philo, 0);
 	if (philo->info->t_t_d < (actual_time() - philo->l_eat))
 	{
-		philo->info->death == 1;
+		pthread_mutex_lock(&philo->info->dead);
+		philo->info->death = 1;
+		pthread_mutex_unlock(&philo->info->dead);
 		ft_write(philo->info, philo->num_philo, 4);
-		ft_free(philo);
-//		return ;
+		free(philo);
 		exit(0);
 	}
 	else
