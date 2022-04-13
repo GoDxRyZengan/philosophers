@@ -15,8 +15,8 @@ void	init_philo_utils(t_info *info, int i)
 
 int	init_philo(t_info *info)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (i < info->nb_philo)
 	{

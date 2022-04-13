@@ -18,13 +18,24 @@ void	ft_write(t_info *info, int nb, int act)
 	pthread_mutex_unlock(&info->write);
 }
 
-void		check_death(t_philo *philo)
+void	ft_free(t_philo *philo)
 {
+	pthread_mutex_destroy(&philo->r_f);
+	pthread_mutex_destroy(&philo->info->write);
+//	free(philo->info->philo);
+}
+
+void	check_death(t_philo *philo)
+{
+	int	i;
+
+	i = philo->info->nb_philo;
 	if (philo->info->t_t_d < (actual_time() - philo->l_eat))
 	{
 		philo->info->death == 1;
 		ft_write(philo->info, philo->num_philo, 4);
-		exit(0);
+		ft_free(philo);
+		return ;
 	}
 }
 
@@ -40,16 +51,17 @@ void	routine_to_eat(t_philo *philo)
 	pthread_mutex_lock(philo->l_f);
 	pthread_mutex_lock(&philo->r_f);
 	ft_write(philo->info, philo->num_philo, 0);
-//	printf("%ld\n", actual_time() - philo->l_eat);
+	ft_write(philo->info, philo->num_philo, 0);
 	if (philo->info->t_t_d < (actual_time() - philo->l_eat))
 	{
 		philo->info->death == 1;
 		ft_write(philo->info, philo->num_philo, 4);
+		ft_free(philo);
+//		return ;
 		exit(0);
 	}
 	else
 		philo->l_eat = actual_time();
-//	printf("%d\n", philo->l_eat);
 	ft_write(philo->info, philo->num_philo, 1);
 	philo->nb_eat++;
 	ft_usleep(philo->info->t_t_e, philo);

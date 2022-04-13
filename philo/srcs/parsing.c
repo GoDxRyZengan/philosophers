@@ -1,8 +1,8 @@
 #include "../include/philo.h"
 
-int		check_int(char *str)
+int	check_int(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -18,9 +18,9 @@ int		check_int(char *str)
 	return (0);
 }
 
-int		check_arg(char **argv)
+int	check_arg(char **argv)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (argv[i])
@@ -29,7 +29,7 @@ int		check_arg(char **argv)
 			return (-1);
 		if (check_int(argv[i]) == -1)
 			return (-1);
-		i++; 
+		i++;
 	}
 	if (ft_atoi(argv[1]) < 1)
 		return (-1);

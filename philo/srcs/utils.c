@@ -27,9 +27,9 @@ void	ft_usleep(long int time_in_ms, t_philo *philo)
 	}
 }
 
-int		ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
