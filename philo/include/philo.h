@@ -43,6 +43,7 @@ struct s_info
 	int				nb_t_e;
 	int				death;
 	long int		start;
+	pthread_mutex_t	eat;
 	pthread_mutex_t	write;
 	pthread_mutex_t	dead;
 	t_philo			*philo;
@@ -61,6 +62,8 @@ void		init_struct(char **tab, int argc, t_info *info);
 long int	ft_atoi(const char *str);
 long int	actual_time(void);
 void		check_death(t_philo *philo);
-void		ft_write(t_info *info, int nb, int act);
+int			check_stop(t_philo *philo);
+void		ft_write(t_philo *philo, int nb, int act, char *str);
+void		end_prog(t_philo *philo);
 
 #endif

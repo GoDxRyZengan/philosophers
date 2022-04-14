@@ -11,6 +11,16 @@
 /* ************************************************************************** */
 #include "../include/philo.h"
 
+int	check_stop(t_philo *philo)
+{
+	int	i;
+
+	pthread_mutex_lock(&philo->info->dead);
+	i = philo->info->death;
+	pthread_mutex_unlock(&philo->info->dead);
+	return (i);
+}
+
 void	*routine(void *arg)
 {
 	t_philo	*philo;
@@ -18,22 +28,25 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->info->nb_philo == 1)
 	{
+		pthread_mutex_lock(&philo->r_f);
 		ft_usleep(philo->info->t_t_d, philo);
-		ft_write(philo->info, philo->num_philo, 4);
-		exit(0);
+		ft_write(philo, philo->num_philo, 1, "died");
+		pthread_mutex_unlock(&philo->r_f);
+		return (NULL);
 	}
 	if (philo->num_philo % 2 == 0)
 		usleep(philo->info->nb_t_e / 10);
 	if (philo->info->nb_t_e <= 0)
 	{
-		while (philo->info->death == 0)
+		while (check_stop(philo) == 0)
 			routine_to_eat(philo);
 	}
 	else if (philo->info->nb_t_e > 0)
 	{
-		while (philo->info->death == 0 && (philo->nb_eat < philo->info->nb_t_e))
+		while (check_stop(philo) == 0 && (philo->nb_eat < philo->info->nb_t_e))
 			routine_to_eat(philo);
 	}
+	return (NULL);
 }
 
 int	main(int argc, char **argv)

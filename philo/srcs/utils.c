@@ -32,9 +32,9 @@ void	ft_usleep(long int time_in_ms, t_philo *philo)
 	while ((actual_time() - start_time) < time_in_ms)
 	{
 		check_death(philo);
-		if (philo->info->death == 1)
+		if (check_stop(philo) == 1)
 			break ;
-		usleep(50);
+		usleep(100);
 	}
 }
 

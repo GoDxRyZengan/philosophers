@@ -42,7 +42,7 @@ int	check_arg(char **argv)
 			return (-1);
 		i++;
 	}
-	if (ft_atoi(argv[1]) < 1)
+	if (ft_atoi(argv[1]) < 1 || ft_atoi(argv[2]) < 1)
 		return (-1);
 	return (0);
 }

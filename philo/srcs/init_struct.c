@@ -11,10 +11,27 @@
 /* ************************************************************************** */
 #include "../include/philo.h"
 
+void	end_prog(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->info->nb_philo)
+	{
+		pthread_mutex_destroy(&philo[i].r_f);
+		i++;
+	}
+	pthread_mutex_destroy(&philo->info->dead);
+	pthread_mutex_destroy(&philo->info->write);
+	pthread_mutex_destroy(&philo->info->eat);
+}
+
 void	init_philo_utils(t_info *info, int i)
 {
 	pthread_mutex_init(&info->philo[i].r_f, NULL);
-	if (i == info->nb_philo - 1)
+	if (info->nb_philo == 1)
+		info->philo[i].l_f = NULL;
+	else if (i == info->nb_philo - 1)
 		info->philo[i].l_f = &info->philo[0].r_f;
 	else
 		info->philo[i].l_f = &info->philo[i + 1].r_f;
@@ -47,10 +64,12 @@ void	init_philo(t_info *info)
 		pthread_join(info->philo[i].id, NULL);
 		i++;
 	}
+	end_prog(info->philo);
 }
 
 void	init_struct(char **tab, int argc, t_info *info)
 {
+	pthread_mutex_init(&info->eat, NULL);
 	pthread_mutex_init(&info->write, NULL);
 	pthread_mutex_init(&info->dead, NULL);
 	info->death = 0;
