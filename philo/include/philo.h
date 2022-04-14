@@ -63,7 +63,7 @@ long int	ft_atoi(const char *str);
 long int	actual_time(void);
 void		check_death(t_philo *philo);
 int			check_stop(t_philo *philo);
-void		ft_write(t_philo *philo, int nb, int act, char *str);
+void		ft_write(t_philo *philo, int nb, char *str);
 void		end_prog(t_philo *philo);
 
 #endif

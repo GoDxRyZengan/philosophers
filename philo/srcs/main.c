@@ -30,7 +30,7 @@ void	*routine(void *arg)
 	{
 		pthread_mutex_lock(&philo->r_f);
 		ft_usleep(philo->info->t_t_d, philo);
-		ft_write(philo, philo->num_philo, 1, "died");
+		ft_write(philo, philo->num_philo, "died");
 		pthread_mutex_unlock(&philo->r_f);
 		return (NULL);
 	}
