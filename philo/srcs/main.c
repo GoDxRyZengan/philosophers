@@ -29,6 +29,7 @@ void	*routine(void *arg)
 	if (philo->info->nb_philo == 1)
 	{
 		pthread_mutex_lock(&philo->r_f);
+		ft_write(philo, philo->num_philo, "has taken a fork");
 		ft_usleep(philo->info->t_t_d, philo);
 		ft_write(philo, philo->num_philo, "died");
 		pthread_mutex_unlock(&philo->r_f);

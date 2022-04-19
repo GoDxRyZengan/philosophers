@@ -10,10 +10,7 @@ NAME	= philo
 
 INC		= ./include/
 
-#CC		= gcc -Wall -Werror -Wextra -g -pthread
-#CC		= gcc -pthread -g -fsanitize=address
-#CC		= gcc -pthread -g
-CC		= gcc -pthread -g -fsanitize=thread
+CC		= gcc -Wall -Werror -Wextra -g -pthread
 
 RM		= rm -f
 

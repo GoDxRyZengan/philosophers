@@ -58,7 +58,6 @@ void		init_struct(char **tab, int argc, t_info *info);
 void		*routine(void *arg);
 void		routine_to_eat(t_philo *philo);
 void		ft_usleep(long int time, t_philo *philo);
-void		init_struct(char **tab, int argc, t_info *info);
 long int	ft_atoi(const char *str);
 long int	actual_time(void);
 void		check_death(t_philo *philo);
